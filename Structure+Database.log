@@ -1,0 +1,400 @@
+API ASP.net
+dotnet new webapi -n SchoolManagementAPI
+cd SchoolManagementAPI
+code .
+dotnet run
+http://localhost:5261/swagger/index.html
+dotnet add package Dapper
+
+dotnet add package Microsoft.Data.SqlClient
+
+NotesApplication.sln
+│
+├── NotesApplication.API
+│   │
+│   ├── Controllers-
+│   │      AuthController.cs
+│   │      NotesController.cs
+│   │
+│   ├── Models-
+│   │      Note.cs
+│   │      User.cs
+│   │
+│   ├── DTOs-
+│   │      LoginDto.cs
+│   │      RegisterDto.cs
+│   │      CreateNoteDto.cs
+│   │      UpdateNoteDto.cs
+│   │      NoteResponseDto.cs
+│   │
+│   ├── Repositories-
+│   │      Interfaces
+│   │      │      INoteRepository.cs
+│   │      │      IUserRepository.cs
+│   │      │
+│   │      Implementations
+│   │             NoteRepository.cs
+│   │             UserRepository.cs
+│   │
+│   ├── Services-
+│   │      AuthService.cs
+│   │      JwtService.cs
+│   │
+│   ├── Data-
+│   │      DapperContext.cs
+│   │
+│   ├── Middleware-
+│   │      ExceptionMiddleware.cs
+│   │
+│   ├── Helpers
+│   │      PasswordHasher.cs
+│   │
+│   ├── Extensions
+│   │      ServiceExtensions.cs
+│   │
+│   ├── appsettings.json
+│   ├── Program.cs
+│   └── NotesApplication.API.csproj
+│
+├── NotesApplication.Client
+│   │
+│   ├── public
+│   │
+│   ├── src
+│   │
+│   ├── assets
+│   │
+│   ├── api
+│   │      axios.ts
+│   │      authApi.ts
+│   │      noteApi.ts
+│   │
+│   ├── components
+│   │      Navbar.vue
+│   │      NoteCard.vue
+│   │      NoteForm.vue
+│   │      SearchBar.vue
+│   │      SortDropdown.vue
+│   │      DeleteModal.vue
+│   │      LoadingSpinner.vue
+│   │
+│   ├── composables
+│   │      useAuth.ts
+│   │      useNotes.ts
+│   │
+│   ├── layouts
+│   │      DefaultLayout.vue
+│   │
+│   ├── pages
+│   │      Login.vue
+│   │      Register.vue
+│   │      Notes.vue
+│   │      NoteDetail.vue
+│   │
+│   ├── router
+│   │      index.ts
+│   │
+│   ├── store
+│   │      auth.ts
+│   │      notes.ts
+│   │
+│   ├── types
+│   │      auth.ts
+│   │      note.ts
+│   │
+│   ├── utils
+│   │      date.ts
+│   │      validator.ts
+│   │
+│   ├── App.vue
+│   └── main.ts
+│
+└── README.md
+
+SQL Server code 
+/*=========================================================
+    NOTES APPLICATION DATABASE
+    SQL Server
+=========================================================*/
+
+-- Create Database
+CREATE DATABASE NotesDB;
+GO
+
+USE NotesDB;
+GO
+
+/*=========================================================
+    USERS TABLE
+=========================================================*/
+
+CREATE TABLE Users
+(
+    UserId INT IDENTITY(1,1) PRIMARY KEY,
+
+    FullName NVARCHAR(100) NOT NULL,
+
+    Email NVARCHAR(150) NOT NULL UNIQUE,
+
+    PasswordHash NVARCHAR(255) NOT NULL,
+
+    CreatedAt DATETIME2 NOT NULL DEFAULT GETDATE()
+);
+GO
+
+/*=========================================================
+    NOTES TABLE
+=========================================================*/
+
+CREATE TABLE Notes
+(
+    NoteId INT IDENTITY(1,1) PRIMARY KEY,
+
+    UserId INT NOT NULL,
+
+    Title NVARCHAR(200) NOT NULL,
+
+    Content NVARCHAR(MAX) NULL,
+
+    CreatedAt DATETIME2 NOT NULL DEFAULT GETDATE(),
+
+    UpdatedAt DATETIME2 NULL,
+
+    CONSTRAINT FK_Notes_Users
+        FOREIGN KEY(UserId)
+        REFERENCES Users(UserId)
+        ON DELETE CASCADE
+);
+GO
+
+/*=========================================================
+    INDEXES
+=========================================================*/
+
+CREATE INDEX IX_Notes_UserId
+ON Notes(UserId);
+
+CREATE INDEX IX_Notes_Title
+ON Notes(Title);
+
+CREATE INDEX IX_Notes_CreatedAt
+ON Notes(CreatedAt);
+GO
+
+/*=========================================================
+    SAMPLE USERS
+=========================================================*/
+
+INSERT INTO Users
+(
+    FullName,
+    Email,
+    PasswordHash
+)
+VALUES
+('John Doe','john@gmail.com','123456'),
+('Alice Smith','alice@gmail.com','123456'),
+('David Lee','david@gmail.com','123456');
+GO
+
+/*=========================================================
+    SAMPLE NOTES
+=========================================================*/
+
+INSERT INTO Notes
+(
+    UserId,
+    Title,
+    Content
+)
+VALUES
+(1,'Shopping List','Milk, Bread, Coffee'),
+
+(1,'Homework','Finish ASP.NET assignment'),
+
+(2,'Meeting','Meeting tomorrow at 9 AM'),
+
+(3,'Travel Plan','Visit Siem Reap next month');
+GO
+
+/*=========================================================
+    VIEW ALL USERS
+=========================================================*/
+
+SELECT *
+FROM Users;
+GO
+
+/*=========================================================
+    VIEW ALL NOTES
+=========================================================*/
+
+SELECT *
+FROM Notes;
+GO
+
+/*=========================================================
+    VIEW NOTES WITH USER NAME
+=========================================================*/
+
+SELECT
+    N.NoteId,
+    U.FullName,
+    N.Title,
+    N.Content,
+    N.CreatedAt,
+    N.UpdatedAt
+FROM Notes N
+INNER JOIN Users U
+ON N.UserId = U.UserId
+ORDER BY N.CreatedAt DESC;
+GO
+
+/*=========================================================
+    GET NOTES BY USER
+=========================================================*/
+
+DECLARE @UserId INT = 1;
+
+SELECT
+    NoteId,
+    Title,
+    Content,
+    CreatedAt,
+    UpdatedAt
+FROM Notes
+WHERE UserId = @UserId
+ORDER BY CreatedAt DESC;
+GO
+
+/*=========================================================
+    SEARCH NOTES
+=========================================================*/
+
+DECLARE @Keyword NVARCHAR(100) = 'Shop';
+
+SELECT *
+FROM Notes
+WHERE Title LIKE '%' + @Keyword + '%'
+   OR Content LIKE '%' + @Keyword + '%';
+GO
+
+/*=========================================================
+    SORT BY TITLE
+=========================================================*/
+
+SELECT *
+FROM Notes
+ORDER BY Title ASC;
+GO
+
+/*=========================================================
+    SORT BY CREATED DATE
+=========================================================*/
+
+SELECT *
+FROM Notes
+ORDER BY CreatedAt DESC;
+GO
+
+/*=========================================================
+    CREATE NOTE
+=========================================================*/
+
+INSERT INTO Notes
+(
+    UserId,
+    Title,
+    Content
+)
+VALUES
+(
+    1,
+    'Learn Dapper',
+    'Practice CRUD using Dapper ORM.'
+);
+GO
+
+/*=========================================================
+    UPDATE NOTE
+=========================================================*/
+
+UPDATE Notes
+SET
+    Title='Learn ASP.NET Core',
+    Content='Study Web API and Dapper.',
+    UpdatedAt=GETDATE()
+WHERE
+    NoteId=1
+    AND UserId=1;
+GO
+
+/*=========================================================
+    DELETE NOTE
+=========================================================*/
+
+DELETE FROM Notes
+WHERE
+    NoteId=4
+    AND UserId=3;
+GO
+
+/*=========================================================
+    COUNT NOTES OF EACH USER
+=========================================================*/
+
+SELECT
+    U.FullName,
+    COUNT(N.NoteId) AS TotalNotes
+FROM Users U
+LEFT JOIN Notes N
+ON U.UserId=N.UserId
+GROUP BY U.FullName;
+GO
+
+/*=========================================================
+    LATEST NOTES
+=========================================================*/
+
+SELECT TOP 5
+*
+FROM Notes
+ORDER BY CreatedAt DESC;
+GO
+
+/*=========================================================
+    NOTE DETAILS
+=========================================================*/
+
+DECLARE @NoteId INT = 2;
+
+SELECT
+    N.NoteId,
+    U.FullName,
+    U.Email,
+    N.Title,
+    N.Content,
+    N.CreatedAt,
+    N.UpdatedAt
+FROM Notes N
+INNER JOIN Users U
+ON N.UserId=U.UserId
+WHERE N.NoteId=@NoteId;
+GO
+
+/*=========================================================
+    DELETE DATABASE (Optional)
+=========================================================*/
+
+-- USE master;
+-- DROP DATABASE NotesDB;
+
+
+
+
+main Route API
+https://localhost:7057/swagger/index.html
+https://localhost:7057/api/Notes
+https://localhost:7057/api/Notes/1
+https://localhost:5096/api/Auth/login
+https://localhost:7057/api/auth/login
