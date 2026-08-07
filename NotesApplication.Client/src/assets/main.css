@@ -1,0 +1,81 @@
+@import "tailwindcss";
+
+@theme {
+  --font-display: "Fraunces", ui-serif, Georgia, serif;
+  --font-body: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+
+  --color-paper: #faf7f0;
+  --color-paper-dim: #f2ede1;
+  --color-card: #fffdf8;
+  --color-ink: #1f2a37;
+  --color-ink-soft: #5b6472;
+  --color-ink-faint: #9a9d8f;
+  --color-line: #ddd5c7;
+  --color-accent: #e8a33d;
+  --color-accent-soft: #f6dba8;
+  --color-stamp: #c1502e;
+  --color-stamp-soft: #ecc2b3;
+}
+
+html {
+  background-color: var(--color-paper);
+}
+
+body {
+  font-family: var(--font-body);
+  color: var(--color-ink);
+  background-color: var(--color-paper);
+  background-image:
+    linear-gradient(var(--color-line) 1px, transparent 1px);
+  background-size: 100% 2.25rem;
+  background-attachment: local;
+}
+
+.font-display {
+  font-family: var(--font-display);
+}
+
+.font-mono {
+  font-family: var(--font-mono);
+}
+
+/* Folded-corner note card — the signature element */
+.note-card {
+  position: relative;
+  background-color: var(--color-card);
+  clip-path: polygon(0 0, calc(100% - 22px) 0, 100% 22px, 100% 100%, 0 100%);
+}
+
+.note-card::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 0 22px 22px 0;
+  border-color: transparent var(--color-paper-dim) transparent transparent;
+  filter: drop-shadow(-1px 1px 1px rgba(31, 42, 55, 0.12));
+}
+
+.rule-divider {
+  border-top: 1px dashed var(--color-line);
+}
+
+::selection {
+  background-color: var(--color-accent-soft);
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-stamp);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.001ms !important;
+    transition-duration: 0.001ms !important;
+  }
+}
