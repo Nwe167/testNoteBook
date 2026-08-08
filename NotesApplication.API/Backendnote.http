@@ -1,0 +1,6 @@
+@Backendnote_HostAddress = http://localhost:5096
+
+GET {{Backendnote_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
