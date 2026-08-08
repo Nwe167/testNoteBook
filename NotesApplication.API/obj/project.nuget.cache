@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "eLmIR0SpMkc=",
+  "dgSpecHash": "VLJEyRTci5w=",
   "success": true,
-  "projectFilePath": "D:\\fullstack\\NotesApplication.sln\\NotesApplication.API\\Backendnote.csproj",
+  "projectFilePath": "D:\\fullstack\\NotesApplication.API\\Backendnote.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\ASUS TUF 17\\.nuget\\packages\\bcrypt.net-next\\4.2.0\\bcrypt.net-next.4.2.0.nupkg.sha512",
     "C:\\Users\\ASUS TUF 17\\.nuget\\packages\\dapper\\2.1.79\\dapper.2.1.79.nupkg.sha512",

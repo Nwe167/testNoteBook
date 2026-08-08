@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "D:\\fullstack\\NotesApplication.sln\\NotesApplication.API\\Backendnote.csproj": {}
+    "D:\\fullstack\\NotesApplication.API\\Backendnote.csproj": {}
   },
   "projects": {
-    "D:\\fullstack\\NotesApplication.sln\\NotesApplication.API\\Backendnote.csproj": {
+    "D:\\fullstack\\NotesApplication.API\\Backendnote.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\fullstack\\NotesApplication.sln\\NotesApplication.API\\Backendnote.csproj",
+        "projectUniqueName": "D:\\fullstack\\NotesApplication.API\\Backendnote.csproj",
         "projectName": "Backendnote",
-        "projectPath": "D:\\fullstack\\NotesApplication.sln\\NotesApplication.API\\Backendnote.csproj",
+        "projectPath": "D:\\fullstack\\NotesApplication.API\\Backendnote.csproj",
         "packagesPath": "C:\\Users\\ASUS TUF 17\\.nuget\\packages\\",
-        "outputPath": "D:\\fullstack\\NotesApplication.sln\\NotesApplication.API\\obj\\",
+        "outputPath": "D:\\fullstack\\NotesApplication.API\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

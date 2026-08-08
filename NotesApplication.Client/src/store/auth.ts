@@ -3,6 +3,7 @@ import { authApi } from '@/api/authApi'
 import { getToken, setToken } from '@/api/axios'
 import type { AuthUser, LoginRequest, RegisterRequest } from '@/types/auth'
 
+import { authClient } from '@/api/axios'
 const USER_KEY = 'notes_app_user'
 
 interface AuthState {
