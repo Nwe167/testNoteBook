@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import { authApi } from '@/api/authApi'
-import { getToken, setToken } from '@/api/axios'
+import { authClient, getToken, setToken } from '@/api/axios'
 import type { AuthUser, LoginRequest, RegisterRequest } from '@/types/auth'
 
 const USER_KEY = 'notes_app_user'
